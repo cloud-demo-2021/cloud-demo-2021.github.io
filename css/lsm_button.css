@@ -247,6 +247,15 @@
     animation: 1s;
 }
 
+.visually-hidden {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.cloud_button_small,
 .cloud_button {
     padding: 19px 15px;
     font-size: 22px;
@@ -267,11 +276,21 @@
     transition-duration: 0.2s;
 }
 
+.cloud_button_small {
+    padding: 10px 10px;
+    font-size: 13px;
+    font-weight: normal;
+    width: 200px;
+    height: 30px;  
+}
+
+.cloud_button_small:hover,
 .cloud_button:hover {
     background: #7379DE;
     color: white;
 }
 
+.cloud_button_small:active,
 .cloud_button:active {
     background-color: #7379DE; background-image: -webkit-gradient(linear, left top, left bottom, from(#7379DE), to(#7F89FF));
     background-image: -webkit-linear-gradient(top, #7379DE, #7F89FF);

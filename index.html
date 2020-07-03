@@ -23,6 +23,7 @@
     <!-- Custom JS -->
     <script src="js/lsm_bush_in_action.js"></script>
     <script src="js/autoRerun.js"></script>
+    <script src="js/uploadDataFile.js"></script>
 
     <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/3227f266ec.js"></script>
@@ -341,6 +342,12 @@
                             <div class="input-group">
                                 <span class="input-group-addon tooltip1"><span class="tooltip1 tooltiptext_input">Key size in bytes (e.g., 8).</span>Key size (bytes) </span>
                                 <input id="F" type="text" class="form-control" aria-label="Key size (bytes)" placeholder="Key size in bytes (e.g., 8)" style="text-align:right" onchange="re_run(event, 'dataset_input')" autocomplete="false"/>
+                            </div>
+                            <!-- Upload data -->
+                            <div class="input-group">
+                                <input type="file" id="data-input" class="visually-hidden" onchange="uploadDataFile(event)">
+                                <label for="data-input" class ="cloud_button_small">Upload data</label>
+                                <label id="data-input-file-name"></label>
                             </div>
                     </div>
                 </div>
