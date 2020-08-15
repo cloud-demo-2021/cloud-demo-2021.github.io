@@ -842,7 +842,7 @@ function drawContinuums(if_regenerate=true) {
     else{
 
         if(best_array[best_array.length-1][0]<cost) {
-            design_1_index=best_array.length-2;
+            design_1_index=best_array.length-1;
             cost_result_text[0]=("We found 1 storage engine design for you at "+cost+".<br><br>");
             console.log(cost_result_text[0],cost);
             //drawDiagram(best_array[best_array.length-1][5], 'cost_result_diagram1');
@@ -950,14 +950,19 @@ function drawContinuums(if_regenerate=true) {
                     document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB: Not Enough Memory</b>";
                     removeAllChildren(document.getElementById("cost_result_p7"));
                 }
-                document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger</b>";
-                //console.log(best_array[design_1_index][8])
-                if((cost-best_array[design_1_index][8].cost)>(best_array[design_1_index+1][8].cost-cost)) {
-                    outputParameters(best_array[design_1_index+1][8], "cost_result_p9", l2);
-                    outputNote(best_array[design_1_index][8], "cost_result_p9");
+                if(best_array[design_1_index][8]!=-1) {
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger</b>";
+                    //console.log(best_array[design_1_index][8])
+                    if((cost-best_array[design_1_index][8].cost)>(best_array[design_1_index+1][8].cost-cost)) {
+                        outputParameters(best_array[design_1_index+1][8], "cost_result_p9", l2);
+                        outputNote(best_array[design_1_index][8], "cost_result_p9");
+                    }else{
+                        outputParameters(best_array[design_1_index][8], "cost_result_p9", l1);
+                        outputNote(best_array[design_1_index+1][8], "cost_result_p9");
+                    }
                 }else{
-                    outputParameters(best_array[design_1_index][8], "cost_result_p9", l1);
-                    outputNote(best_array[design_1_index+1][8], "cost_result_p9");
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger: Not Enough Memory</b>";
+                    removeAllChildren(document.getElementById("cost_result_p9"));
                 }
             }
     }
@@ -2104,7 +2109,7 @@ function drawDesigns(best_array, cost) {
     else{
 
         if(best_array[best_array.length-1][0]<cost) {
-            design_1_index=best_array.length-2;
+            design_1_index=best_array.length-1;
             cost_result_text[0]=("We found 1 storage engine design for you at "+cost+".<br><br>");
             console.log(cost_result_text[0],cost);
             //drawDiagram(best_array[best_array.length-1][5], 'cost_result_diagram1');
@@ -2200,48 +2205,96 @@ function drawDesigns(best_array, cost) {
 
         if( cost_result_text[0] != "Cost is too little"){
 
-            //document.getElementById("cost_result_p6").setAttribute("style","position:relative;top:0px");
-            if(best_array[design_1_index][7]!=-1) {
-                document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB<br><br></b>";
-                if((cost-best_array[design_1_index][7].cost)>(best_array[design_1_index+1][7].cost-cost)) {
-                    outputParameters(best_array[design_1_index+1][7], "cost_result_p7", l2);
-                    outputNote(best_array[design_1_index][7], "cost_result_p7");
-                    flag=1;
-                }else{
+            if(cost_result_text[0] == "We found 1 storage engine design for you at "+cost+".<br><br>"){ 
+                if(best_array[design_1_index][7]!=-1) {
+                    document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB<br><br></b>";
                     outputParameters(best_array[design_1_index][7], "cost_result_p7", l1);
-                    outputNote(best_array[design_1_index+1][7], "cost_result_p7");
-
+                }else{
+                    document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p7"));
                 }
-            }else{
-                document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB: Not Enough Memory<br><br></b>";
-                removeAllChildren(document.getElementById("cost_result_p7"));
-            }
-            document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger<br><br></b>";
-            //console.log(best_array[design_1_index][8])
-            if((cost-best_array[design_1_index][8].cost)>(best_array[design_1_index+1][8].cost-cost)) {
-                outputParameters(best_array[design_1_index+1][8], "cost_result_p9", l2);
-                outputNote(best_array[design_1_index][8], "cost_result_p9");
-            }else{
-                outputParameters(best_array[design_1_index][8], "cost_result_p9", l1);
-                outputNote(best_array[design_1_index+1][8], "cost_result_p9");
-            }
-            document.getElementById("cost_result_p10").innerHTML = "<b>FASTER <br>(hybrid logs)<br></b>";
-            //console.log(best_array[design_1_index][8])
-            if((cost-best_array[design_1_index][9].cost)>(best_array[design_1_index+1][9].cost-cost)) {
-                outputParameters(best_array[design_1_index+1][9], "cost_result_p11", l2);
-                outputNote(best_array[design_1_index][9], "cost_result_p11");
-            }else{
-                outputParameters(best_array[design_1_index][9], "cost_result_p11", l1);
-                outputNote(best_array[design_1_index+1][9], "cost_result_p11");
-            }
-            document.getElementById("cost_result_p12").innerHTML = "<b>FASTER <br>(append-only logs)<br></b>";
-            //console.log(best_array[design_1_index][8])
-            if((cost-best_array[design_1_index][10].cost)>(best_array[design_1_index+1][10].cost-cost)) {
-                outputParameters(best_array[design_1_index+1][10], "cost_result_p13", l2);
-                outputNote(best_array[design_1_index][10], "cost_result_p13");
-            }else{
-                outputParameters(best_array[design_1_index][10], "cost_result_p13", l1);
-                outputNote(best_array[design_1_index+1][10], "cost_result_p13");
+                if(best_array[design_1_index][8]!=-1) {
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger<br><br></b>";
+                    outputParameters(best_array[design_1_index][8], "cost_result_p9", l1);
+                }else{
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p9"));
+                }
+                if(best_array[design_1_index][9]!=-1) {
+                    document.getElementById("cost_result_p10").innerHTML = "<b>FASTER <br>(hybrid logs)<br></b>";
+                    outputParameters(best_array[design_1_index][9], "cost_result_p11", l1);
+                }else{
+                    document.getElementById("cost_result_p10").innerHTML = "<b>FASTER-H: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p11"));
+                }
+                if(best_array[design_1_index][10]!=-1) {
+                    document.getElementById("cost_result_p12").innerHTML = "<b>FASTER <br>(append-only logs)<br></b>";
+                    outputParameters(best_array[design_1_index][10], "cost_result_p13", l1);
+                }else{
+                    document.getElementById("cost_result_p12").innerHTML = "<b>FASTER-A: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p13"));
+                }
+
+            } else {
+                //document.getElementById("cost_result_p6").setAttribute("style","position:relative;top:0px");
+                if(best_array[design_1_index][7]!=-1) {
+                    document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB<br><br></b>";
+                    if((cost-best_array[design_1_index][7].cost)>(best_array[design_1_index+1][7].cost-cost)) {
+                        outputParameters(best_array[design_1_index+1][7], "cost_result_p7", l2);
+                        outputNote(best_array[design_1_index][7], "cost_result_p7");
+                        flag=1;
+                    }else{
+                        outputParameters(best_array[design_1_index][7], "cost_result_p7", l1);
+                        outputNote(best_array[design_1_index+1][7], "cost_result_p7");
+
+                    }
+                }else{
+                    document.getElementById("cost_result_p6").innerHTML = "<b>RocksDB: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p7"));
+                }
+                if(best_array[design_1_index][8]!=-1) {
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger<br><br></b>";
+                    //console.log(best_array[design_1_index][8])
+                    if((cost-best_array[design_1_index][8].cost)>(best_array[design_1_index+1][8].cost-cost)) {
+                        outputParameters(best_array[design_1_index+1][8], "cost_result_p9", l2);
+                        outputNote(best_array[design_1_index][8], "cost_result_p9");
+                    }else{
+                        outputParameters(best_array[design_1_index][8], "cost_result_p9", l1);
+                        outputNote(best_array[design_1_index+1][8], "cost_result_p9");
+                    }
+                }else{
+                    document.getElementById("cost_result_p8").innerHTML = "<b>WiredTiger: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p9"));
+                }
+                if(best_array[design_1_index][9]!=-1) {
+                    document.getElementById("cost_result_p10").innerHTML = "<b>FASTER <br>(hybrid logs)<br></b>";
+                    //console.log(best_array[design_1_index][8])
+                    if((cost-best_array[design_1_index][9].cost)>(best_array[design_1_index+1][9].cost-cost)) {
+                        outputParameters(best_array[design_1_index+1][9], "cost_result_p11", l2);
+                        outputNote(best_array[design_1_index][9], "cost_result_p11");
+                    }else{
+                        outputParameters(best_array[design_1_index][9], "cost_result_p11", l1);
+                        outputNote(best_array[design_1_index+1][9], "cost_result_p11");
+                    }
+                }else{
+                    document.getElementById("cost_result_p10").innerHTML = "<b>FASTER-H: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p11"));
+                }
+
+                if(best_array[design_1_index][10]!=-1) {
+                    document.getElementById("cost_result_p12").innerHTML = "<b>FASTER <br>(append-only logs)<br></b>";
+                    //console.log(best_array[design_1_index][8])
+                    if((cost-best_array[design_1_index][10].cost)>(best_array[design_1_index+1][10].cost-cost)) {
+                        outputParameters(best_array[design_1_index+1][10], "cost_result_p13", l2);
+                        outputNote(best_array[design_1_index][10], "cost_result_p13");
+                    }else{
+                        outputParameters(best_array[design_1_index][10], "cost_result_p13", l1);
+                        outputNote(best_array[design_1_index+1][10], "cost_result_p13");
+                    }
+                }else{
+                    document.getElementById("cost_result_p12").innerHTML = "<b>FASTER-A: Not Enough Memory<br><br></b>";
+                    removeAllChildren(document.getElementById("cost_result_p13"));
+                }
             }
         }
     }
@@ -2393,6 +2446,7 @@ function outputParameters(Variables, id, l) {
     if(l<0.2)
         l=0.2;
     var result_div = document.getElementById(id);
+    var cost=parseInt(document.getElementById("cost").value.replace(/\D/g,''), 10);
     removeAllChildren(result_div);
     //outputParameter(result_div,Variables.memory_footprint/Variables.VM_instance_num,"M (GB)");
     outputParameter(result_div,Variables.Vcpu_num+" vCPUs","./images/cpu.png");
@@ -2436,8 +2490,9 @@ function outputParameters(Variables, id, l) {
     var div_tmp = document.createElement("div");
     drawDiagram(Variables, div_tmp);
     div_tmp.setAttribute("style", "height:100px;");
-    if(Variables.L==0)
-        div_tmp.innerHTML="<span style='font-size: 12px'><i>The data fits in "+Variables.memory_footprint/Variables.VM_instance_num+" GB of memory (no I/Os).</i></span>";
+    if(Variables.L==0 || Variables.latency == null || fixTime(Variables.latency) == "0.000 sec")
+        //div_tmp.innerHTML="<span style='font-size: 12px'><i>The data fits in "+Variables.memory_footprint/Variables.VM_instance_num+" GB of memory (no I/Os).</i></span>";
+        div_tmp.innerHTML="The total size of the base data is " + ((Variables.N*Variables.E)/(1024*1024*1024)).toFixed(2) + " GB and with the input budget you can buy at least " + Variables.memory_footprint + " GB of memory. Hence, the data fits in memory (no I/Os).";
     else {
         div_tmp.setAttribute("class", "tooltip1");
         var span_tmp = document.createElement("span");
@@ -2452,7 +2507,7 @@ function outputParameters(Variables, id, l) {
     }
     outputParameter(result_div,cloud_array[Variables.cloud_provider],"./images/cloud.png");
     outputParameter(result_div,"$"+parseFloat(Variables.cost).toFixed(1),"./images/dollar.png");
-    if(Variables.L==0){
+    if(Variables.L==0 || Variables.latency == null || fixTime(Variables.latency) == "0.000 sec"){
         outputParameter(result_div,"No Latency","./images/performance.png", true);
         outputParameter(result_div,"","./images/throughput.png", true);
     }else {
@@ -2490,6 +2545,7 @@ function outputText(result_div,text,top){
 
 function outputNote(Variables, id){
     var result_div = document.getElementById(id);
+    var cost=parseInt(document.getElementById("cost").value.replace(/\D/g,''), 10);
     var text = document.createElement("div");
     if(1)
         text.setAttribute("style", "width:90%; position:absolute; top:462px; font-size:12px");
@@ -2582,8 +2638,9 @@ function createPopup(Variables){
     var div_tmp = document.createElement("div");
     drawDiagram(Variables, div_tmp);
     div_tmp.setAttribute("style", "height:100px;");
-    if(Variables.L==0)
-        div_tmp.innerHTML="<span style='font-size: 12px'><i>The data fits in "+Variables.memory_footprint/Variables.VM_instance_num+" GB of memory (no I/Os).</i></span>";
+    if(Variables.L==0 || Variables.latency == null || fixTime(Variables.latency) == "0.000 sec")
+        //div_tmp.innerHTML="<span style='font-size: 12px'><i>The data fits in "+Variables.memory_footprint/Variables.VM_instance_num+" GB of memory (no I/Os).</i></span>";
+        div_tmp.innerHTML="The total size of the base data is " + ((Variables.N*Variables.E)/(1024*1024*1024)).toFixed(2) + " GB and with the input budget you can buy at least " + Variables.memory_footprint + " GB of memory. Hence, the data fits in memory (no I/Os).";
     else {
         div_tmp.setAttribute("class", "tooltip1");
         var span_tmp = document.createElement("span");
@@ -2595,7 +2652,7 @@ function createPopup(Variables){
     result_div.appendChild(div_tmp);
     outputParameter(result_div,cloud_array[Variables.cloud_provider],"https://volatill.github.io/demosubmitter_cloud/images/cloud.png");
     outputParameter(result_div,"$"+parseFloat(Variables.cost).toFixed(1),"https://volatill.github.io/demosubmitter_cloud//images/dollar.png");
-    if(Variables.L==0){
+    if(Variables.L==0 || Variables.latency == null || fixTime(Variables.latency) == "0.000 sec"){
         outputParameter(result_div,"No Latency","https://volatill.github.io/demosubmitter_cloud//images/performance.png");
         outputParameter(result_div,"","https://volatill.github.io/demosubmitter_cloud//images/throughput.png");
     }else {
@@ -2830,13 +2887,19 @@ function createAndDownloadFile(fileName, content) {
 }
 
 function generateDownload(Variables, result_div, id) {
+    var latency;
+    if(Variables.latency == null) {
+        latency = "0.000 sec";
+    } else {
+        latency = fixTime(Variables.latency);
+    }
     var div_tmp = document.createElement("div");
     var download_id=id+"_download"
     div_tmp.setAttribute("class","download_icon");
     div_tmp.setAttribute("id",download_id);
     div_tmp.innerHTML="<img class=\"img-responsive img-centered\" style=\"width:25px;\" src=\"./images/explain.png\"/>"
     result_div.appendChild(div_tmp);
-    var download_content=("Cloud provider: "+ cloud_array[Variables.cloud_provider] +"\nCost="+Variables.cost+", Latency=" + fixTime(Variables.latency) +  "\nT=" + Variables.T + ", K=" + Variables.K + ", Z=" + Variables.Z + ", L=" + Variables.L +"\nMemory="+ Variables.memory_footprint/Variables.VM_instance_num+ " GB\nBuffer=" + (Variables.Buffer / 1024 / 1024 / 1024).toFixed(2) + " GB\nBloom filter=" + (Variables.M_BF / 1024 / 1024 / 1024).toFixed(2) + " GB\nFence Pointer=" + (Variables.M_FP / 1024 / 1024 / 1024).toFixed(2) + " GB\nVM instance: " + Variables.VM_info);
+    var download_content=("Cloud provider: "+ cloud_array[Variables.cloud_provider] +"\nCost="+Variables.cost+", Latency=" + latency +  "\nT=" + Variables.T + ", K=" + Variables.K + ", Z=" + Variables.Z + ", L=" + Variables.L +"\nMemory="+ Variables.memory_footprint/Variables.VM_instance_num+ " GB\nBuffer=" + (Variables.Buffer / 1024 / 1024 / 1024).toFixed(2) + " GB\nBloom filter=" + (Variables.M_BF / 1024 / 1024 / 1024).toFixed(2) + " GB\nFence Pointer=" + (Variables.M_FP / 1024 / 1024 / 1024).toFixed(2) + " GB\nVM instance: " + Variables.VM_info);
     if(using_compression){
         download_content+="\nCompression: "+Variables.compression_name;
     }
